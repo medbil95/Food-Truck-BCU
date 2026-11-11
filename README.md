@@ -22,7 +22,6 @@ Single page with anchor sections: **Home (hero)** → **Menu** (`#menu`) → **O
 ## Responsiveness notes
 - Mobile-first: base styles target ≤480px; enhancements are added with `min-width` media queries.
 - **Mobile (≤480px):** single-column layout, hamburger menu, stacked hero.
-- **Tablet (≥768px):** two-column menu grid, hours and map side by side, inline nav.
 - **Desktop (≥1024px):** three-column menu grid, hero image beside the text.
 - Layout uses CSS Grid (menu, hours/map) and Flexbox (header, hero, menu rows). Spacing and colours come from CSS variables.
 
