@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mo's Burgers | Food Truck</title>
+<meta name="description" content="Wood-fired street food from our truck. See the menu, opening times, where to find us, and get in touch.">
+<style>
+  /* ---------- Base (mobile-first, <=480px) ---------- */
+  :root{
+    --bg:#fff8ef; --ink:#2a1d14; --accent:#c2410c; --accent-dark:#9a3412;
+    --card:#fff; --muted:#6b5b4e; --line:#ecdcc9; --error:#b42318;
+    --space:1rem; --radius:14px;
+    --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);font-size:1rem;line-height:1.6;background:var(--bg);color:var(--ink)}
+  img{max-width:100%;height:auto;display:block}
+  a{color:var(--accent-dark)}
+  :focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+  .wrap{width:100%;max-width:960px;margin-inline:auto;padding-inline:var(--space)}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .skip-link{position:absolute;left:var(--space);top:-60px;background:#fff;color:var(--ink);padding:.5rem 1rem;border-radius:8px;z-index:100}
+  .skip-link:focus{top:var(--space)}
+
+  h1{font-size:clamp(1.9rem,8vw,3.4rem);line-height:1.1}
+  h2{font-size:1.6rem;line-height:1.2;margin-bottom:.5rem}
+  h3{font-size:1rem}
+  section{padding-block:2.5rem}
+  [id]{scroll-margin-top:72px}
+  .sub{color:var(--muted);margin-bottom:1.5rem}
+
+  /* Header + nav */
+  .site-header{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff}
+  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:.75rem}
+  .logo{font-weight:800;font-size:1.25rem;letter-spacing:.5px;color:#fff;text-decoration:none}
+  .nav-toggle{display:none;background:none;border:1.5px solid #fff;color:#fff;border-radius:8px;padding:.45rem .6rem;cursor:pointer;line-height:0}
+  .nav-toggle .bar{display:block;width:22px;height:2px;background:#fff;margin:5px 0;transition:transform .2s,opacity .2s}
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(2){opacity:0}
+  .nav-toggle[aria-expanded="true"] .bar:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .site-nav ul{list-style:none;display:flex;flex-direction:column}
+  .site-nav a{display:block;color:#fff;text-decoration:none;padding:.6rem 0}
+  .site-nav a:hover{color:#ffb98a}
+
+  /* JS enabled: collapse nav on mobile */
+  .js .nav-toggle{display:block}
+  .js .site-nav{position:absolute;left:0;right:0;top:100%;background:var(--ink);padding:0 var(--space) .5rem;display:none}
+  .js .site-nav.open{display:block}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#9a3412,#c2410c);color:#fff;text-align:center;padding-block:3rem}
+  .hero .wrap{display:flex;flex-direction:column;align-items:center;gap:1rem}
+  .hero p{font-size:1.1rem;max-width:560px}
+  .hero-img{width:140px}
+  .btn{display:inline-block;background:#fff;color:var(--accent-dark);padding:.75rem 1.6rem;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700}
+  .btn:hover{background:#ffe8d6}
+  .btn.solid{background:var(--accent-dark);color:#fff}
+  .btn.solid:hover{background:#7c2d12}
+
+  /* Menu: Grid */
+  .grid{display:grid;grid-template-columns:1fr;gap:var(--space)}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.1rem}
+  .item .row{display:flex;justify-content:space-between;gap:.75rem}
+  .price{font-weight:700}
+  .item p{color:var(--muted);font-size:.93rem;margin-top:.25rem}
+  .tag{display:inline-block;font-size:.75rem;background:#e6f4ea;color:#1e5b31;border-radius:6px;padding:1px 7px;margin-top:.5rem}
+
+  /* Hours + Find us */
+  .band{background:#fff}
+  .cols{display:grid;grid-template-columns:1fr;gap:2rem;align-items:start}
+  .band section{padding-block:0}
+  .band .cols{padding-block:2.5rem}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+  th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--line);font-weight:400}
+  tbody th{font-weight:400}
+  tr:last-child th,tr:last-child td{border-bottom:0}
+  tr.today{background:#fff0e3;font-weight:700}
+  tr.today th{font-weight:700}
+  .map{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .map .cap{padding:.9rem 1rem;font-size:.95rem}
+
+  /* Form */
+  form{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.25rem;max-width:600px}
+  label{display:block;font-weight:600;margin:.9rem 0 .25rem}
+  label .opt{font-weight:400;color:var(--muted)}
+  input,select,textarea{width:100%;padding:.7rem .75rem;border:1.5px solid #bfa98f;border-radius:8px;font:inherit;background:#fffdfa;color:var(--ink)}
+  input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--error)}
+  .err{color:var(--error);font-size:.85rem;min-height:1.2em;margin-top:.2rem}
+  #ok{display:none;background:#e6f4ea;color:#1e5b31;padding:.9rem;border-radius:8px;margin-top:1rem;font-weight:600}
+  form .btn{margin-top:1rem}
+
+  .site-footer{background:var(--ink);color:#e5d7c8;text-align:center;padding:1.75rem var(--space);font-size:.9rem}
+
+  /* ---------- Tablet (>=768px) ---------- */
+  @media (min-width:768px){
+    .wrap{padding-inline:1.5rem}
+    h2{font-size:1.9rem}
+    section{padding-block:3.5rem}
+    .hero{padding-block:4.5rem}
+    .hero-img{width:180px}
+    .grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
+    .cols{grid-template-columns:repeat(2,1fr);gap:2rem}
+    form{padding:1.75rem}
+    /* inline nav, hide hamburger */
+    .js .nav-toggle{display:none}
+    .js .site-nav,.site-nav{position:static;display:block;padding:0;background:none}
+    .site-nav ul{flex-direction:row;gap:1.5rem}
+    .site-nav a{padding:.25rem 0}
+  }
+
+  /* ---------- Desktop (>=1024px) ---------- */
+  @media (min-width:1024px){
+    body{font-size:1.05rem}
+    .hero{padding-block:5.5rem}
+    .hero .wrap{flex-direction:row-reverse;justify-content:center;text-align:left;gap:3rem}
+    .hero .hero-text{max-width:560px}
+    .hero-img{width:220px}
+    .grid{grid-template-columns:repeat(3,1fr)}
+  }
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#top"><span aria-hidden="true"></span>Mo's <span aria-hidden="true">🍔</span><span class="visually-hidden">Burgers, back to top</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#hours">Opening hours</a></li>
+        <li><a href="#find-us">Find us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1 id="hero-title">Wood-fired HALAL street food, served fresh.</h1>
+        <p>Burgers, loaded fries, sandwiches and tacos cooked to order from our little truck with a big flavour.</p>
+        <p><a class="btn" href="#menu">See the menu</a></p>
+      </div>
+      <img class="hero-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMjAwIj4KICA8cGF0aCBkPSJNMzAgOTBDMzAgNDAgODAgMjAgMTIwIDIwczkwIDIwIDkwIDcweiIgZmlsbD0iI2YyYTMzYSIvPgogIDxnIGZpbGw9IiNmZmYzZDYiPjxlbGxpcHNlIGN4PSI4MCIgY3k9IjUwIiByeD0iNiIgcnk9IjMiIHRyYW5zZm9ybT0icm90YXRlKC0yMCA4MCA1MCkiLz48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMzgiIHJ4PSI2IiByeT0iMyIvPjxlbGxpcHNlIGN4PSIxNjAiIGN5PSI1MCIgcng9IjYiIHJ5PSIzIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAxNjAgNTApIi8+PGVsbGlwc2UgY3g9IjEwNSIgY3k9IjY4IiByeD0iNiIgcnk9IjMiIHRyYW5zZm9ybT0icm90YXRlKDEwIDEwNSA2OCkiLz48ZWxsaXBzZSBjeD0iMTQ1IiBjeT0iNjgiIHJ4PSI2IiByeT0iMyIgdHJhbnNmb3JtPSJyb3RhdGUoLTEwIDE0NSA2OCkiLz48L2c+CiAgPHBhdGggZD0iTTI0IDk4cTE4IDE0IDM2IDB0MzYgMCAzNiAwIDM2IDAgMzYgMHYxMEgyNHoiIGZpbGw9IiM1YWEwMmMiLz4KICA8cGF0aCBkPSJNMjggMTA4aDE4NGwtMTQgMTQtMjAtOC0yMCA4LTIwLTgtMjAgOC0yMC04LTIwIDgtMjAtOHoiIGZpbGw9IiNmZmM0MmUiLz4KICA8cmVjdCB4PSIyNiIgeT0iMTE2IiB3aWR0aD0iMTg4IiBoZWlnaHQ9IjI4IiByeD0iMTQiIGZpbGw9IiM1YTJlMWEiLz4KICA8cGF0aCBkPSJNMzAgMTUyaDE4MGMwIDI0LTIwIDM0LTUwIDM0SDgwYy0zMCAwLTUwLTEwLTUwLTM0eiIgZmlsbD0iI2UwOGUyYSIvPgo8L3N2Zz4K" alt="Illustration of a double burger with lettuce and cheese" width="240" height="200">
+    </div>
+  </section>
+
+  <section id="menu" aria-labelledby="menu-title">
+    <div class="wrap">
+      <h2 id="menu-title">Menu</h2>
+      <p class="sub">Everything is made to order. Ask about allergens at the hatch.</p>
+      <div class="grid">
+        <article class="item"><div class="row"><h3>Mo's Burger</h3><span class="price">£8.50</span></div><p>Double beef patty, cheddar, pickles, caramelized onions and mushrooms, smoky bbq sauce.</p></article>
+        <article class="item"><div class="row"><h3>Crispy Chicken Bun</h3><span class="price">£8.00</span></div><p>Buttermilk fried chicken, slaw, hot honey.</p></article>
+        <article class="item"><div class="row"><h3>Crispy Chicken Bowl</h3><span class="price">£7.50</span></div><p>Marinated fried chicken, rice or fries, white sauce.</p></article>
+        <article class="item"><div class="row"><h3>Pulled Beef Tacos</h3><span class="price">£8.00</span></div><p>Slow-cooked beef, pickled onion,lime, coriander.</p></article>
+        <article class="item"><div class="row"><h3>Chicken Sandwich</h3><span class="price">£8.00</span></div><p>Marinated chicken, cheese, green and red peppers, onions.</p></article>
+        <article class="item"><div class="row"><h3>Loaded Fries</h3><span class="price">£5.50</span></div><p>Cheese sauce, jalapeños, crispy onions.</p><span class="tag">Veg</span></article>
+        <article class="item"><div class="row"><h3>Smoked Lamb Bowl</h3><span class="price">£7.00</span></div><p>Smoked lamb, rice or fries, charred corn, caramelized mushrooms.</p></article>
+        <article class="item"><div class="row"><h3>Fresh Lemonade</h3><span class="price">£3.00</span></div><p>Freshly squeezed daily. Classic or Watermelon.</p></article>
+        <article class="item"><div class="row"><h3>Mozzarella Bites</h3><span class="price">£4.00</span></div><p>Crispy mozzarella sticks, garlic and parsley sauce.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap cols">
+      <section id="hours" aria-labelledby="hours-title">
+        <h2 id="hours-title">Opening times</h2>
+        <p class="sub">Hours may change in bad weather. Check our socials for updates.</p>
+        <table id="hoursTable">
+          <caption class="visually-hidden">Weekly opening hours</caption>
+          <thead class="visually-hidden"><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead>
+          <tbody>
+            <tr data-day="1"><th scope="row">Monday</th><td>Closed</td></tr>
+            <tr data-day="2"><th scope="row">Tuesday</th><td>11:30 – 17:00</td></tr>
+            <tr data-day="3"><th scope="row">Wednesday</th><td>11:30 – 17:00</td></tr>
+            <tr data-day="4"><th scope="row">Thursday</th><td>11:30 – 20:00</td></tr>
+            <tr data-day="5"><th scope="row">Friday</th><td>11:30 – 22:30</td></tr>
+            <tr data-day="6"><th scope="row">Saturday</th><td>12:00 – 22:30</td></tr>
+            <tr data-day="0"><th scope="row">Sunday</th><td>12:00 – 19:00</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="find-us" aria-labelledby="find-title">
+        <h2 id="find-title">Find us</h2>
+        <p class="sub">Parked at Market Square, next to the fountain.</p>
+        <figure class="map">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgMzgwIj4KICA8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjM4MCIgZmlsbD0iI2VlZjJlNiIvPgogIDxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxMTAiIHJ4PSI2IiBmaWxsPSIjZGZlNmQwIi8+CiAgPHJlY3QgeD0iNDAwIiB5PSIyMzAiIHdpZHRoPSIxNTAiIGhlaWdodD0iMTEwIiByeD0iNiIgZmlsbD0iI2RmZTZkMCIvPgogIDxyZWN0IHg9IjYwIiB5PSIyNTAiIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHJ4PSI2IiBmaWxsPSIjZDdlOGYzIi8+CiAgPHBhdGggZD0iTTAgMTkwSDYwMCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjI2Ii8+CiAgPHBhdGggZD0iTTMwMCAwVjM4MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIyIi8+CiAgPHBhdGggZD0iTTAgMTkwSDYwME0zMDAgMFYzODAiIHN0cm9rZT0iI2UzZDljOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtZGFzaGFycmF5PSIxMCA4Ii8+CiAgPHBhdGggZD0iTTQyMCAwTDUyMCAxOTAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxNCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iODAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcng9IjYiIGZpbGw9IiNjZmUwYjgiLz4KICA8ZyBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICA8dGV4dCB4PSIzNTAiIHk9IjExNiIgZmlsbD0iIzNmNTEyOSI+U3F1YXJlPC90ZXh0PgogICAgPHRleHQgeD0iMTIwIiB5PSIxMDAiIGZpbGw9IiM1NTYzM2YiPkxpYnJhcnk8L3RleHQ+CiAgICA8dGV4dCB4PSI0NzUiIHk9IjI5MCIgZmlsbD0iIzU1NjMzZiI+U3RhdGlvbjwvdGV4dD4KICAgIDx0ZXh0IHg9IjEyMCIgeT0iMjk1IiBmaWxsPSIjM2Q2Nzg0Ij5DYW5hbDwvdGV4dD4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwLDE5MCkiPgogICAgPGNpcmNsZSByPSIyOCIgZmlsbD0iI2MyNDEwYyIgb3BhY2l0eT0iLjIiLz4KICAgIDxwYXRoIGQ9Ik0wIDE0Qy0xNi02LTE2LTI4IDAtMjhTMTYtNiAwIDE0WiIgZmlsbD0iI2MyNDEwYyIvPgogICAgPGNpcmNsZSBjeT0iLTE0IiByPSI2IiBmaWxsPSIjZmZmIi8+CiAgPC9nPgo8L3N2Zz4K" alt="Simple map showing the food truck pinned at the crossroads beside Market Square, near the library, station and canal" width="600" height="380" loading="lazy">
+          <figcaption class="cap">
+            <span aria-hidden="true">📍</span> Market Square, High Street (example address)<br>
+            <a href="https://www.google.com/maps/search/?api=1&query=Market+Square" target="_blank" rel="noopener">Open Market Square in Google Maps (new tab)</a>
+          </figcaption>
+        </figure>
+      </section>
+    </div>
+  </div>
+
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Get in touch</h2>
+      <p class="sub">Questions, catering or event bookings? Send us a message. Fields marked * are required.</p>
+      <form id="contactForm" novalidate>
+        <label for="name">Name *</label>
+        <input id="name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="60" aria-describedby="name-err">
+        <div class="err" id="name-err" aria-live="polite"></div>
+
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-err">
+        <div class="err" id="email-err" aria-live="polite"></div>
+
+        <label for="phone">Phone <span class="opt">(optional)</span></label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[+0-9][0-9 \(\)\-]{6,17}" aria-describedby="phone-err">
+        <div class="err" id="phone-err" aria-live="polite"></div>
+
+        <label for="topic">Topic *</label>
+        <select id="topic" name="topic" required aria-describedby="topic-err">
+          <option value="">Select one…</option>
+          <option>General question</option>
+          <option>Event / catering booking</option>
+          <option>Feedback</option>
+        </select>
+        <div class="err" id="topic-err" aria-live="polite"></div>
+
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="5" required minlength="10" maxlength="1000" aria-describedby="message-err"></textarea>
+        <div class="err" id="message-err" aria-live="polite"></div>
+
+        <button type="submit" class="btn solid">Send message</button>
+        <div id="ok" role="status">Thanks! Your message looks good. (Demo only: nothing was sent.)</div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="yr"></span> Mo's Burgers · mosburgers@gmail.uk · @mos.burgers</p>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+
+  // 1) Hamburger menu toggle
+  (function () {
+    var btn = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    function setOpen(open) {
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    }
+    btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+    nav.addEventListener('click', function (e) { if (e.target.tagName === 'A') setOpen(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setOpen(false); btn.focus(); } });
+    window.matchMedia('(min-width:768px)').addEventListener('change', function () { setOpen(false); });
+  })();
+
+  // 2) Highlight today's opening hours + footer year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var row = document.querySelector('#hoursTable tr[data-day="' + new Date().getDay() + '"]');
+  if (row) {
+    row.classList.add('today');
+    row.querySelector('td').textContent += ' (today)';
+  }
+
+  // 3) Form validation: HTML attributes + light JS messages (no data is sent)
+  (function () {
+    var form = document.getElementById('contactForm');
+    var ok = document.getElementById('ok');
+    var messages = {
+      name: { valueMissing: 'Please enter your name.', tooShort: 'Name must be at least 2 characters.' },
+      email: { valueMissing: 'Please enter your email.', typeMismatch: 'Please enter a valid email address.' },
+      phone: { patternMismatch: 'Use digits only, e.g. 07123 456789 or +44 7123 456789.' },
+      topic: { valueMissing: 'Please choose a topic.' },
+      message: { valueMissing: 'Please write a message.', tooShort: 'Message must be at least 10 characters.' }
+    };
+
+    function check(el) {
+      var msg = '';
+      if (!el.validity.valid) {
+        for (var key in messages[el.name]) {
+          if (el.validity[key]) { msg = messages[el.name][key]; break; }
+        }
+        msg = msg || el.validationMessage;
+      }
+      document.getElementById(el.id + '-err').textContent = msg;
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    }
+
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!messages[el.name]) return;
+      el.addEventListener('blur', function () { check(el); });
+      el.addEventListener('input', function () {
+        if (el.getAttribute('aria-invalid') === 'true') check(el);
+      });
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      ok.style.display = 'none';
+      var fields = Array.prototype.filter.call(form.elements, function (el) { return messages[el.name]; });
+      var results = fields.map(check);
+      if (results.every(Boolean)) {
+        ok.style.display = 'block';
+        form.reset();
+        fields.forEach(function (el) { el.removeAttribute('aria-invalid'); });
+      } else {
+        fields[results.indexOf(false)].focus();
+      }
+    });
+  })();
+</script>
+</body>
+</html>
